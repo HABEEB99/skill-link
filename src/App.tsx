@@ -3,39 +3,42 @@ import {
   AuthPage,
   Button,
   CreatePostPage,
-  ExplorePage,
+  EditPostPage,
+  HomePage,
+  PostPage,
   ProfilePage,
   ViewProfilePage,
 } from "./components";
 import { useStore } from "./hooks/use-store";
 
 const App = () => {
-  const { session, signOut, isLoading } = useStore();
+  const { session, signOut } = useStore();
 
-  if (isLoading)
-    return (
-      <div className="flex justify-center items-center h-screen">
-        Loading...
-      </div>
-    );
   return (
     <BrowserRouter>
       <div className="min-h-screen bg-gray-100">
-        <nav className="bg-blue-600 p-4 text-white">
-          <div className="container mx-auto flex justify-between items-center">
+        <header className="bg-blue-600 text-white p-4">
+          <div className="max-w-4xl mx-auto flex justify-between items-center">
             <Link to="/" className="text-2xl font-bold">
               SkillLink
             </Link>
-            <div className="space-x-4">
+            <nav>
               {session ? (
                 <>
-                  <Link to="/profile" className="hover:underline">
+                  <Link
+                    to={`/profile/${session.user.id}`}
+                    className="mr-4 hover:underline"
+                  >
                     Profile
                   </Link>
-                  <Link to="/create-post" className="hover:underline">
+                  <Link to="/create-post" className="mr-4 hover:underline">
                     Create Post
                   </Link>
-                  <Button onClick={signOut} variant="danger">
+                  <Button
+                    onClick={signOut}
+                    variant="danger"
+                    className="cursor-pointer"
+                  >
                     Logout
                   </Button>
                 </>
@@ -44,16 +47,18 @@ const App = () => {
                   Login
                 </Link>
               )}
-            </div>
+            </nav>
           </div>
-        </nav>
+        </header>
         <main className="container mx-auto p-4">
           <Routes>
-            <Route path="/" element={<ExplorePage />} />
+            <Route path="/" element={<HomePage />} />
             <Route path="/auth" element={<AuthPage />} />
-            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/profile/:userId" element={<ProfilePage />} />
             <Route path="/create-post" element={<CreatePostPage />} />
             <Route path="/profile/:userId" element={<ViewProfilePage />} />
+            <Route path="/edit-post/:id" element={<EditPostPage />} />
+            <Route path="/post/:id" element={<PostPage />} />
           </Routes>
         </main>
       </div>
