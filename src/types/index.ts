@@ -53,3 +53,7 @@ export interface Comment {
   created_at: string;
   profiles: Profile; // Joined user profile
 }
+
+export interface Session {
+  user: { id: string };
+}
